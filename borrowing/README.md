@@ -1,6 +1,6 @@
 # Borrowing and References in RUST
 
-Rust uses borrowing and referencing to deal with variables/data ownership. Instead of _moving_ data about and having to explicitly return ownership for further use.
+Rust uses borrowing and referencing to deal with variables/data ownership, as opposed to _moving_ data about and having to explicitly return ownership for further use.
 
 ## Rules of References
 
