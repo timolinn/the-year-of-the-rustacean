@@ -21,5 +21,10 @@ Example:
     let striker2 = &striker[..]; // Morata
 ```
 
+## Below are some general SLice principles
+
 - Slice do not have Ownership
--
+- A slice does not include the the character in the last index unless we add an equal sign.
+- Internally, the slice data structure stores the starting position and the length of the slice, which corresponds to `ending_index` minus `starting_index`.
+- String (`&str`) literals are slices (`let s = "Rustlings!"`).
+- Slices also apply to `arrays`.
