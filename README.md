@@ -75,6 +75,9 @@ Struct definition is like a general template for a type, instances fill in that 
 - We can't change the value of any data unless the instance is mutable, `let mut MrBean = User {...}`.
 - Marking only certain fields as mutable is not allowed by the rust compiler.
 - Rust's field init shorthand syntax let's us define a value with a variable of the same name without having to write the variable name twice. So `User { name: name }` is same as `User { name }`
+- `impl` blocks (implementation block) hold methods that specify the behavior that instances of the struct possess.
+- `structs` are allowed to have multiple `impl` blocks.
+- `derive` annotation can be used to add useful behaviors to structs by implementing `traits` automatically.
 - Rust's Struct update syntax let's create new instances based off the data of a previous instance. _eg._
 
 ```rust
