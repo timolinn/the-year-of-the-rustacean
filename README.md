@@ -113,4 +113,4 @@ Tuple structs have the added meaning the struct name provides but don’t have n
     let naija = Coord(4, 14);
 ```
 
-Tuple still behaves like tuples, you can destructure them, you can alse use a `.` followed byt the index to access an individual value.
+Tuple structs still behaves like ordinary tuples, you can destructure them, you can also use a `.` notation followed by the index to access an individual value.
