@@ -12,6 +12,32 @@ Rust uses borrowing and referencing to deal with variables/data ownership, as op
 
 ## Ownership in Rust
 
+- Ownership is one of Rust concepts that helps guarantee memory safety without a GC (Garbage Collector). It prevents Rust from having common low level language errors like dangling pointers, segfaults etc. Ownership is Rust's central feature, it basically means that every value has an owner, as a matter of fact, only one owner at a time.
+
+Take for example:
+
+```rust
+    {// me is invalid here
+        let me = "Timolinn"; // me is valid here
+                             // still valid here
+    } // me is out of scope, so it's now invalid.
+```
+
+
+
+### Some general Ownership principles
+
+- Rust use the notion of `borrowing` and `moving` to implement ownership rules.
+- Ownership  rules are checked at compilation level using a tool called the `borrow checker`.
+- Data can be `borrowed` or `moved`, when you `borrow` data you get a reference to that value.
+- Each value in Rust has the `owner`.
+- No two scopes can `own` the same data/variable, You can have as many immutable references as you want, but you can only have one `mutable` reference at a time.
+- You can't have another reference to a `mutable value`, even it is an `immutable reference`.
+- When the owner goes out of scope, the value will be `dropped`.
+- Moving large chunks of data can be pretty expensive, use References.
+- Rust data values use scoped to determine validity, unless `borrowed` or `moved` the value is dropped at the end of it's scope/block.
+- Every value remains valid until it goes out of scope.
+
 ## The Slice Type
 
 A _string slice_ is a reference to a part of a `String`. it is usually created with the `&[start..end]` syntax. The resulting string is a reference to a part of the original string.
@@ -35,7 +61,7 @@ Example:
     let striker2 = &striker[..]; // Morata
 ```
 
-### Below are some general SLice principles
+### Some general SLice principles
 
 - Slice do not have Ownership
 - A slice does not include the the character in the last index unless we add an equal sign.
@@ -69,7 +95,7 @@ Struct definition is like a general template for a type, instances fill in that 
     };
 ```
 
-### Below are some general `Struct` principles
+### Some general `Struct` principles
 
 - We can use the dot notation to get a specific value _eg._ use `MrBean.age` to get the value of age.
 - We can't change the value of any data unless the instance is mutable, `let mut MrBean = User {...}`.
