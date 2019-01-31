@@ -1,4 +1,10 @@
-## Borrowing and References in RUST
+# 100DaysOfRustLang 🔥🦀🔥
+
+This repository contains code samples and some writings based on my understandings of the Rust Programming Language. Feel free to use as your refresher for certain rust concepts that can be hard to grasp. This is my first low level programming language, it hasn't been easy plus Rust is a really different animal. Some of the text here is gotten (mostly NOT verbatim) the Book, Chris Krycho's [podcast](https://newrustacean.com).
+
+> If you find anything wrong, typos and what not, I'd be glad to to receive your pull request 😃.
+
+## Borrowing and References in Rust
 
 Rust uses borrowing and referencing to deal with variables/data ownership, as opposed to _moving_ data about and having to explicitly return ownership for further use.
 
@@ -37,6 +43,7 @@ Take for example:
 - Moving large chunks of data can be pretty expensive, use References.
 - Rust data values use scoped to determine validity, unless `borrowed` or `moved` the value is dropped at the end of it's scope/block.
 - Every value remains valid until it goes out of scope.
+- In Rust memory belongs to `scope`.
 
 ## The Slice Type
 
