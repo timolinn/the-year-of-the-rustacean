@@ -136,7 +136,7 @@ OR
 
 ### Tuple Structs
 
-Tuple structs have the added meaning the struct name provides but don’t have names associated with their fields; rather, they just have the types of the fields.
+Tuple structs have the added meaning the struct name provides but don’t have names associated with their fields; rather, they just have the types of the fields. Useful for scenarios where you want named tuples, much like python's `collections.namedtuple` that creates tuple-like objects.
 
 ```rust
     struct Color(i32, i32, i32);
@@ -146,4 +146,95 @@ Tuple structs have the added meaning the struct name provides but don’t have n
     let naija = Coord(4, 14);
 ```
 
-Tuple structs still behaves like ordinary tuples, you can destructure them, you can also use a `.` notation followed by the index to access an individual value.
+Tuple structs still behaves like ordinary tuples, you can use them with the update syntax, you can also use a `.` notation followed by the index to access an individual value.
+
+```rust
+    println!("{}", black.0); // 0
+    println!("{}", naija.1); // 14
+```
+
+## Enumns
+
+Enumerations or Enums as mostly referred to allows the definition of types by enumerating through a possible set of values.
+Enums are like variants, no data can be of more than one variant of the same enum. Classic example from the Rust book
+is the two IP address types (IPV4 and IPV6), the two fundamental types of Ip Addresses. Each Enum variant can be used as a type.
+
+```rust
+    enum IpAddr {
+        V4,
+        V6
+    }
+```
+
+The code above create an enum witht two variants, `v4` and `V6`. Therefore we can create instances of each type of IP Address like
+this:
+
+```rust
+    let ipv4 = IpAddr::V4;
+    let ipv6 = IpAddr::V6;
+```
+
+ALternatively, we can use structs to improve the code:
+
+```rust
+    struct Ipv4Addr {
+        addr: String,
+    }
+
+    struct Ipv6Addr {
+        addr: String,
+    }
+
+    enum IpAddr {
+        V4(Ipv4Addr),
+        V6(Ipv6Addr),
+    }
+```
+
+Here we use structs to store our data before wrapping them into our enum. This can also be achieved without
+using structs. See the example below:
+
+```rust
+    enum IpAddr {
+        V4(String),
+        V6(String),
+    }
+
+    let localhost = IpAddr::V4(String::from("127.0.0.1"));
+```
+
+### The `Option` enum.
+The `Option` enum is defined by the Rust standard library,
+it encodes the very common scenarios where a value could be something or nothing. Null does not exist in Rust, the `Option` enum is Rust's way of expressing a null or not-null scenarios.
+
+```rust
+    enum Option<T> {
+        Some(T),
+        None
+    }
+```
+
+The `Option<T>` enum has two variants `Some(T)` and `None`. The symbol `<T>` defines a generic type `T`, this means that `Some(T)` can contain data/value of any type.
+
+```rust
+    let some_string = Some("Rustacean");
+    let some_number = Some(12);
+
+    let absent_number: Option<i32> = None;
+```
+
+Notice we didn't have to import `Option<T>` or `Some()` or `None`? This is beacuse by defaults they are included in the prelude, that's enough to note how important they are to the language.
+
+### Some general `Enum` principles
+- Enums can encapsulate multiples types or variants.
+- A variant van be of any type.
+- We can pass data directly inside an enum instead of using structs.
+- Enums can have `impl` blocks.
+- The `Option` enum can be be `Some` or `None`, swap those with `NotNull` or `Null` respectively, incase you need more explanation.
+- The `Option` enum, `Some` and `None` values are included in the prelude, therefore you don't need to import `Option` to use
+it or namespace `Option::Some()` to use it.
+- `Null` values does not exist in Rust 😎, the `Option` enum is here to save the day 😄.
+- In Rust, `Nullable` values are not assumed.
+- To extract the `v` in `Some(v)` use pattern match or just `let v = Some(v).unwrap();`.
+
+## Pattern Matching

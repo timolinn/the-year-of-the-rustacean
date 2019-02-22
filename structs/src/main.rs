@@ -1,4 +1,4 @@
-#![allow(unused_variables, unused_mut, non_snake_case)]
+#![allow(unused_variables, non_snake_case)]
 #[derive(Debug)]
 struct Coord(i64, i64);
 
