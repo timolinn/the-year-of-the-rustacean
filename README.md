@@ -1,4 +1,4 @@
-# 100DaysOfRustLang 🔥🦀🔥
+# The year of the Rustacean 🦀
 
 This repository contains code samples and some writings based on my understandings of the Rust Programming Language. Feel free to use as your refresher for certain rust concepts that can be hard to grasp. This is my first low level programming language, it hasn't been easy plus Rust is a really different animal. Some of the text here is gotten (mostly NOT verbatim) the Book, Chris Krycho's [podcast](https://newrustacean.com).
 
