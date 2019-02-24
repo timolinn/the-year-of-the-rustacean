@@ -1,6 +1,6 @@
 # The year of the Rustacean 🦀
 
-This repository contains code samples and some writings based on my understandings of the Rust Programming Language. Feel free to use as your refresher for certain rust concepts that can be hard to grasp. This is my first low level programming language, it hasn't been easy plus Rust is a really different animal. Some of the text here is gotten (mostly NOT verbatim) the Book, Chris Krycho's [podcast](https://newrustacean.com).
+This repository contains code samples and some writings based on my understandings of the Rust Programming Language. Feel free to use as your refresher for certain rust concepts that can be hard to grasp. This is my first low level programming language, it hasn't been easy plus Rust is a really different animal. This short summary is heavily influenced by the Rust Book and Chris Krycho's [podcast](https://newrustacean.com).
 
 > If you find anything wrong, typos and what not, I'd be glad to to receive your pull request 😃.
 
@@ -238,3 +238,63 @@ it or namespace `Option::Some()` to use it.
 - To extract the `v` in `Some(v)` use pattern match or just `let v = Some(v).unwrap();`.
 
 ## Pattern Matching
+
+The `match` operator is a control flow operator that enables you to compare a value against a series of patterns and executes code as per the pattern matched.
+
+Quoting from the rust book:
+> Think of a `match` expression as being like a coin-sorting machine: coins slide down a track with variously sized holes along it, and each coin falls through the first hole it encounters that it fits into. In the same way, values go through each pattern in a `match`, and at the first pattern the value “fits,” the value falls into the associated code block to be used during execution.
+
+For example:
+
+```rust
+    enum CryptoCurrencies {
+        BitCoin,
+        Ethereum,
+        LiteCoin,
+        BitCoinCash
+    }
+
+    fn value_balance(crypto: CryptoCurrencies) -> f32 {
+        match coin {
+            CryptoCurrencies::BitCoin => {
+                println!("Satoshi's pride!");
+                1
+            },
+            CryptoCurrencies::Ethereum => 0.8,
+            CryptoCurrencies::LiteCoin => 0.5,
+            CryptoCurrencies::BitCoinCach => 0.2,
+        }
+    }
+```
+
+### Matching with `Option<T>` enum
+
+```rust
+    fn plus_one(x: Option<i32>) -> Option<i32> {
+        match x {
+            None => None,
+            Some(i) => Some(i + 1),
+        }
+    }
+
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+```
+
+### Some general Match Principles
+
+- Matches are exhaustive, you must cover every possible match case to get Rust to compile your code.
+- The `_` is used as default match arm, should the provided value does not match any patter.
+- The match expression compares the resulting value against the pattern of each arm, in order.
+- Curly brackets are allowed when defining associated code of an arm.
+
+### if let
+
+According to the Rust Book, The `if let` let's you combine `if` and `let` into less verbose way to handle values that match one pattern while ignoring the rest.
+
+```rust
+   if let Some(3) = some_u8_value {
+        println!("three");
+    }
+```
