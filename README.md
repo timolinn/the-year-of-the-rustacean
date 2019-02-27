@@ -298,3 +298,69 @@ According to the Rust Book, The `if let` let's you combine `if` and `let` into l
         println!("three");
     }
 ```
+
+## Vectors `Vec<T>`
+
+A `vector` is a data structure that can store multiple data of the same type, it is one of rust's collections. To create a new and empty vector we can use the conventional `new()` method or the `vec!` macro.
+
+```rust
+    // note that the type annotation is important in this case because we are creating an empty vector
+    let v: <i32> = Vec::new();
+    let n = vec![1, 2, 3];
+```
+
+We can add elements into a vector using the `.push` method.
+
+```rust
+    let mut v: <i32> = Vec::new();
+    v.push(1);
+    v.push(4);
+```
+
+We can read from a vector using the index signature or the `.get` method.
+
+```rust
+    // using the index syntax
+    let n = vec![1, 2, 3];
+    let one = n[0];
+
+    // using .get
+    match n.get(3) {
+        Some(3) => println!("matched letter {}", n.get(3)),
+        _ => None
+    }
+```
+
+when we need to store elements of a different type in a vector, we can define and use an enum!
+
+```rust
+    enum SpreadsheetCell {
+        Int(i32),
+        Float(f64),
+        Text(String),
+    }
+
+    let row = vec![
+        SpreadsheetCell::Int(3),
+        SpreadsheetCell::Text(String::from("blue")),
+        SpreadsheetCell::Float(10.12),
+    ];
+```
+
+### Some general `Vector` principles:
+
+- They can contain only same type of data.
+- When a `vector` gets dropped, all it's elements are dropped too.
+- You can add tot a vector using the `.push` method.
+- You can read from a vector using the index syntax or the `.get` method.
+- When you try to access an invalid index in a `vecror`, the `.get` (`v.get(9_000)`) method returns `None` without panicking while Rust will panick if you perform the same operation using the index syntax (`&v[9_000]`).
+- Rust will not let you extend a mutable vector if there's an immutable reference to the same `vector` already. Check ownership rules above.
+- You can iterate over elements in a `vector`, mutably or immutably using loops.
+
+## Strings
+
+`String` is a wrapper over a `Vec<u8>`. It is `utf-8` encoded and is allocated on the heap. there are 3 relevant ways to look at `String`s in Rust:
+
+- as bytes
+- as scalar values
+- as graheme clusters
