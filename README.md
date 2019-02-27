@@ -356,6 +356,7 @@ when we need to store elements of a different type in a vector, we can define an
 - When you try to access an invalid index in a `vecror`, the `.get` (`v.get(9_000)`) method returns `None` without panicking while Rust will panick if you perform the same operation using the index syntax (`&v[9_000]`).
 - Rust will not let you extend a mutable vector if there's an immutable reference to the same `vector` already. Check ownership rules above.
 - You can iterate over elements in a `vector`, mutably or immutably using loops.
+- Rust needs to know what types will be in the vector at compile time so it knows exactly how much memory on the heap will be needed to store each element.
 
 ## Strings
 
@@ -364,3 +365,19 @@ when we need to store elements of a different type in a vector, we can define an
 - as bytes
 - as scalar values
 - as graheme clusters
+
+Rust has only one string type in the core language, which is the string slice `str`. The `String` type is made available by the Rust `std` library, it is growable and can be mutated.
+To create a new `String` we can use the following:
+
+```rust
+    let s = String::new();
+    s.push_str("Hello World~");
+
+    let ns = String::from("Hello world");
+
+    let ans = "hello world".to_string();
+
+    // Rust String are utf-8 encoded so we can also do the following.
+    let hello = String::from("नमस्ते");
+    let hello = String::from("你好");
+```
