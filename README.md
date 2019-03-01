@@ -370,14 +370,24 @@ Rust has only one string type in the core language, which is the string slice `s
 To create a new `String` we can use the following:
 
 ```rust
-    let s = String::new();
+    let mut s = String::new();
     s.push_str("Hello World~");
 
     let ns = String::from("Hello world");
 
-    let ans = "hello world".to_string();
+    let an_s = "hello world".to_string();
 
     // Rust String are utf-8 encoded so we can also do the following.
     let hello = String::from("नमस्ते");
     let hello = String::from("你好");
+```
+
+Like every other proramming languages, there is string concatenation in rust. Generally there are two ways to string concatenaion in Rust:
+
+```rust
+    let hello = String::from("Hello, ");
+    let world = String::from("World!");
+    // the hello value wi be moved here
+    let hello_world = hello + &world;
+    // the hello variable is dropped here.
 ```

@@ -8,7 +8,7 @@ fn main() {
 
     let an_s = String::from("s: Cow<'a, str>");
 
-    // concatenation
+    // String concatenation
     let s1 = String::from("Hello, ");
     let s2 = String::from("world!");
     let s3 = s1 + &s2; // note s1 has been moved here and can no longer be used
@@ -17,5 +17,5 @@ fn main() {
     let s2 = String::from("29");
     let s3 = String::from("00");
     let s = format!("The time is {}-{}-{}", s1, s2, s3);
-
+    println!("{}", s);
 }
