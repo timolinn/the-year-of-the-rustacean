@@ -360,14 +360,14 @@ when we need to store elements of a different type in a vector, we can define an
 
 ## Strings
 
-`String` is a wrapper over a `Vec<u8>`. It is `utf-8` encoded and is allocated on the heap. there are 3 relevant ways to look at `String`s in Rust:
+`String` type is a wrapper over a `Vec<u8>`. It is `utf-8` encoded and is allocated on the heap. There are 3 relevant ways to look at `String` type in Rust:
 
 - as bytes
 - as scalar values
 - as graheme clusters
 
 Rust has only one string type in the core language, which is the string slice `str`. The `String` type is made available by the Rust `std` library, it is growable and can be mutated.
-To create a new `String` we can use the following:
+To create a new `String` we can do the following:
 
 ```rust
     let mut s = String::new();
@@ -382,13 +382,19 @@ To create a new `String` we can use the following:
     let hello = String::from("你好");
 ```
 
-Like every other proramming languages, there is string concatenation in rust. Generally there are two ways to string concatenaion in Rust:
+Like every other proramming language, there is string concatenation in Rust. Generally there are two ways to string concatenate in Rust:
 
 ```rust
     let hello = String::from("Hello, ");
     let world = String::from("World!");
     // the hello value wi be moved here
     let hello_world = hello + &world; // the hello variable is dropped here.
+
+    // OR
+    let s1 = String::from("are you");
+    let s2 = String::from("a");
+    let s3 = String::from("Rustacean");
+    let s = format!("Hey! {} {} {}?", s1, s2, s3);
 ```
 
 ### `String` Slicing.
