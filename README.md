@@ -412,6 +412,23 @@ slicing like this:
     let slice_s = &s[0..=1]; // he
 ```
 
+
+### Iterating over a String.
+
+Fortuantely we can manipulate individual `char`s of a `String` by interating over them. Study and run the examples below:
+
+```rust
+    for c in "नमस्ते".chars() {
+       println!("{}", c);
+    }
+
+    for b in "नमस्ते".bytes() {
+        println!("{}", b);
+    }
+```
+
+Notice the `.bytes()` and `.chars()` methods?
+
 ### Some general `String` principles
 - Rust has only one string type in it's core, that is the `str` usually seen as `&str` in most codebases.
 - String literals are stored in the binary output of a program and are known as string slices.
@@ -421,3 +438,4 @@ Rust is not trivial, due to Rust's way of encoding strings.
 - Under the hood Rust's `String` type is a `Vec<u8>`.
 - The `format!` macro works like the `println!` macro but returns the string instead printing to stdout.
 - You can use the `+` or the `format!` macro to concatenate a string.
+- We can iterate over strings as chars or as bytes.
