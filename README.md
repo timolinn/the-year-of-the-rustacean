@@ -439,3 +439,6 @@ Rust is not trivial, due to Rust's way of encoding strings.
 - The `format!` macro works like the `println!` macro but returns the string instead printing to stdout.
 - You can use the `+` or the `format!` macro to concatenate a string.
 - We can iterate over strings as chars or as bytes.
+
+
+## HashMap
