@@ -388,6 +388,36 @@ Like every other proramming languages, there is string concatenation in rust. Ge
     let hello = String::from("Hello, ");
     let world = String::from("World!");
     // the hello value wi be moved here
-    let hello_world = hello + &world;
-    // the hello variable is dropped here.
+    let hello_world = hello + &world; // the hello variable is dropped here.
 ```
+
+### `String` Slicing.
+
+Rust's `char` type can vary in size, it is based on the string encoding.
+For example:
+
+```rust
+    let s = "hello"; // 5 bytes
+    let slice_s = &s[0..1]; // h
+
+    let s2 = "Здравствуйте"; // 24 bytes
+    let slice_s2 = &s2[0..1]; // PANIC!!!
+```
+
+Because of this reason we must create string slices with caution because it can crash our program if we try to access
+the wrong range. Notice `let slice_s = &s[0..1];` returns only `h`? We can ask rust to include the `char` of the index `1` by
+slicing like this:
+
+```rust
+    let slice_s = &s[0..=1]; // he
+```
+
+### Some general `String` principles
+- Rust has only one string type in it's core, that is the `str` usually seen as `&str` in most codebases.
+- String literals are stored in the binary output of a program and are known as string slices.
+- There are three ways to look at a `String` in Rust's perspective, `bytes`, `scalar values` and `grapheme clusters`.
+- String indexing is not allowed in Rust for many reasons, one of which is that determining the length of a `String` in
+Rust is not trivial, due to Rust's way of encoding strings.
+- Under the hood Rust's `String` type is a `Vec<u8>`.
+- The `format!` macro works like the `println!` macro but returns the string instead printing to stdout.
+- You can use the `+` or the `format!` macro to concatenate a string.
