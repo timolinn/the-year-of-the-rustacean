@@ -450,3 +450,46 @@ programmer is accessing the `String` from is not trivial, due to Rust's way of e
 
 
 ## HashMap
+
+`HashMap<K, V>` stores a mapping of keys of type K to values of type V. It does this via a hashing function, which determines how it places these keys and values into memory. It's like an associative array for the PHP developer or the ES6 Map for Javascript developer.
+
+To create a `HashMap` we must first import the type.
+
+```rust
+    use std::collections::HashMap;
+
+    let mut scores = HashMap::new();
+
+    // use .insert to add key value pairs
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Yellow"), 50);
+```
+
+You can read value from a `HashMap` using the `.get(k: K)` method.
+
+```rust
+    let team_blue = String::from("Blue");
+    let team_blue_score = score.get(&team_blue); // This will return a `Some(v)`
+```
+
+<b>[Read more about hashmaps here.](https://doc.rust-lang.org/book/ch08-03-hash-maps.html)</b>
+
+### Some general principles
+- `HashMaps` store data on the heap.
+- `HashMaps` are homogeneous, ie all keys must be of the same type, same goes for all the values.
+- Rust can infer types within a hashmap.
+- Types that implement the `Copy` trait are copied into the `HashMap`, while owned types are moved in to the `HashMap`.
+
+```rust
+    use std::collections::HashMap;
+
+    let color = String::from("Favorite color");
+
+    let mut map = HashMap::new();
+    map.insert(color);
+    // color is invalid at this point.
+```
+
+- You can pass references into a HasMap and the type will not be moved, however we must use lifetimes to
+make it work.
+-
