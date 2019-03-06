@@ -6,27 +6,27 @@ This repository contains code samples and some writings based on my understandin
 
 ## Borrowing and References in Rust
 
-Rust uses borrowing and referencing to deal with variables/data ownership, as opposed to _moving_ data about and having to explicitly return ownership for further use.
+Every value/data has only one owner in Rust. By default, variables are immutable and block scoped (every variable becomes invalid at the end of it's scope. A Scope or block is basically a `{..}`), Rust uses _borrowing_ and _referencing_ to deal with data ownership, as opposed to _moving_ data about and having to explicitly return or pass ownership to another block or function for further use.
 
 ### Rules of References
 
 - At any given time, you can have either (but not both of) one mutable reference or any number of immutable references.
 - References must always be valid
-- We’re not allowed to modify something we have a reference to.
+- You’re not allowed to modify something that another thing has reference to.
 - You can only have one mutable reference to a particular piece of data in a particular scope.
 - We also cannot have a mutable reference while we have an immutable one. In other words, we cannot borrow a mutable variable that is also borrowed as immutable.
 
 ## Ownership in Rust
 
-- Ownership is one of Rust concepts that helps guarantee memory safety without a GC (Garbage Collector). It prevents Rust from having common low level language errors like dangling pointers, segfaults etc. Ownership is Rust's central feature, it basically means that every value has an owner, as a matter of fact, only one owner at a time.
+- Ownership is one of Rust concepts that helps guarantee memory safety without a GC (Garbage Collector). It prevents Rust from having common low level language errors like dangling pointers, segfaults, data races etc. Ownership is Rust's central feature, it basically means that every value has an owner, as a matter of fact, only one owner at a time. *_One cannot simply understand ownership at first_*, understanding ownership is understanding most of Rust.
 
 Take for example:
 
 ```rust
-    {// me is invalid here
-        let me = "Timolinn"; // me is valid here
+    {// name is invalid here
+        let name = "Timolinn"; // name is valid here
                              // still valid here
-    } // me is out of scope, so it's now invalid.
+    } // name is out of scope, so it's now invalid.
 ```
 
 
@@ -47,7 +47,7 @@ Take for example:
 
 ## The Slice Type
 
-A _string slice_ is a reference to a part of a `String`. it is usually created with the `&[start..end]` syntax. The resulting string is a reference to a part of the original string.
+A _string slice_ is a reference to a part of a `String`. it is usually created with the `&[start..end]` syntax. The resulting string is a reference to a part of the original string. The `&str` type or in English _string literal_ can also be referred to as a string slice. Refer to [String](https://github.com/timolinn/the-year-of-the-rustacean#strings) for more about strings.
 
 For example:
 
@@ -506,3 +506,7 @@ make it work.
 - For updating existing `HashMap` read [here](https://doc.rust-lang.org/book/ch08-03-hash-maps.html#updating-a-hash-map).
 
 ## Error Handling
+
+Errors are a fact of life in software development, Rust has a number of ways for handling "errorable" situations. I must mention that Rust does a lot work in trying to standardize error reporting by providing multiple features for handling errors.
+
+Errors are grouped into two in Rust, _recoverable_ and _unrecoverable errors_. Rust does not have exceptions, instead it provides the `Result<T, E>` type for _recoverable errors_ and the `panic!` macro for crashing a program when it encounters _unrecoverable errors_.
