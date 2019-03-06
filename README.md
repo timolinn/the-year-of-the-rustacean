@@ -492,4 +492,17 @@ You can read value from a `HashMap` using the `.get(k: K)` method.
 
 - You can pass references into a HasMap and the type will not be moved, however we must use lifetimes to
 make it work.
--
+- You create a `HashMap<K, V>` using the conventional `new()` method: `let map = HashMap::new();`
+- You can also create a new `HashMap` from an array of tuples by calling the `.collect()` method on it.
+```rust
+    use std::collections::HashMap;
+
+    let teams = vec![String::from("Blue"), String::from("Yellow")];
+    let initial_scores = vec![10, 50];
+
+    let scores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
+```
+- Use the `.insert(K,V)` method to add a value to a `HashMap<K, V>` and `.get(&K)` to retrieve value.
+- For updating existing `HashMap` read [here](https://doc.rust-lang.org/book/ch08-03-hash-maps.html#updating-a-hash-map).
+
+## Error Handling
