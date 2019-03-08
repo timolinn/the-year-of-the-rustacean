@@ -1,8 +1,8 @@
 #![allow(unused)]
 fn main() {
-    // hash_map();
-    // update_kv();
-    // get_highest_value();
+    hash_map();
+    update_key_value();
+    get_highest_value();
 }
 
 
@@ -32,7 +32,7 @@ fn hash_map() -> () {
 
 }
 
-fn update_kv() -> () {
+fn update_key_value() -> () {
     use std::collections::HashMap;
 
     // let text = "hello world wonderful world";

@@ -1,4 +1,4 @@
-#![allow(unused_variables)]
+#![allow(unused)]
 #![allow(dead_code)]
 use std::fs::File;
 use std::io;

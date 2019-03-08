@@ -507,6 +507,52 @@ make it work.
 
 ## Error Handling
 
-Errors are a fact of life in software development, Rust has a number of ways for handling "errorable" situations. I must mention that Rust does a lot work in trying to standardize error reporting by providing multiple features for handling errors.
+Errors are a fact of life in software development, Rust has a number of ways for handling "errorable" situations. I must mention that Rust does a lot work in trying to standardize error reporting by providing multiple features for handling errors. Rust sometimes takes care of the error handling for you if you want.
+
+One way it does this is by using the `?`, another way is by calling `unwrap()` method on a `Result` type. Both the `?` and `unwrap()` method tells rust to go ahead and eveluate the returned types by returning an `Ok(V)` when the operation was successful, by `panicking` or propagating an error when the `Err()` type is returned. Find examples below.
 
 Errors are grouped into two in Rust, _recoverable_ and _unrecoverable errors_. Rust does not have exceptions, instead it provides the `Result<T, E>` type for _recoverable errors_ and the `panic!` macro for crashing a program when it encounters _unrecoverable errors_.
+
+Examples:
+
+```rust
+    fn main() {
+        panic!("crash and burn 🔥🔥🔥🔥!"); // stops the program with a message and stacktrace
+    }
+```
+
+Rust handle Recoverable errors with the `Result` enum
+
+```rust
+    enum Result<T, E> {
+        Ok(T), // T represents the type of value to be returned in a success case
+        Err(E),// E represents the type of error on failure
+    }
+```
+
+Most functions in Rust `std` and in third party packages return the `Result` type if the function can `fail`.
+
+```rust
+    use std::fs::File;
+
+    fn main() {
+        // you could do this
+        let f = File::open("hello.txt").unwrap();
+
+        // OR this
+        let f = match f {
+            Ok(file) => file,
+            Err(error) => {
+                panic!("There was a problem opening the file: {:?}", error)
+            },
+        };
+    }
+
+    // OR this
+    let f = File::open("hello.txt").expect("Failed to open hello.txt"); // `.expect` calls the `panic` for you with the error message provided as an argument.
+
+    // OR this
+    let mut f = File::open("hello.txt")?; // notice the question mark 🙂
+```
+
+### Some general error handling priciples
