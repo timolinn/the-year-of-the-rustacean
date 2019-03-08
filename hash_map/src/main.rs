@@ -1,6 +1,8 @@
+#![allow(unused)]
 fn main() {
-    hash_map();
-    update_kv();
+    // hash_map();
+    // update_kv();
+    // get_highest_value();
 }
 
 
@@ -33,14 +35,38 @@ fn hash_map() -> () {
 fn update_kv() -> () {
     use std::collections::HashMap;
 
-    let text = "hello world wonderful world";
+    // let text = "hello world wonderful world";
+    let text = vec![1, 2, 3, 4, 1,3, 4, 1];
 
     let mut map = HashMap::new();
 
-    for word in text.split_whitespace() {
+    for word in text {
         let count = map.entry(word).or_insert(0);
         *count += 1;
     }
 
     println!("{:?}", map);
+}
+
+fn get_highest_value() -> () {
+    use std::collections::HashMap;
+
+    let numbers = vec![1, 2, 3, 4, 1,3, 3, 3, 4, 1];
+    let mut map = HashMap::new();
+    for number in numbers {
+        let count = map.entry(number).or_insert(0);
+        *count += 1;
+    }
+    let mut max_value: Option<(&u32, &u32)> = None;
+    for (key, value) in map.iter() {
+        max_value = match max_value {
+            None => Some((key, value)),
+            Some(max_value) => if value > &max_value.1 {
+                Some((key, value))
+            } else {
+                Some(max_value)
+            },
+        };
+    }
+    println!("{}", max_value.unwrap().0);
 }

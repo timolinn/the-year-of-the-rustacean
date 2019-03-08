@@ -3,7 +3,6 @@
 pub mod exercise;
 
 fn main() {
-    let numbers = vec![2, 4, 5, 6, 7];
-    let sum = exercise::mean(&numbers);
-    println!("{}", sum);
+    exercise::int_odd_number();
+    exercise::get_highest_value_folding();
 }

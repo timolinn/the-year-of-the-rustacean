@@ -68,7 +68,7 @@ Example:
     let striker2 = &striker[..]; // Morata
 ```
 
-### Some general SLice principles
+### Some general Slice principles
 
 - Slice do not have Ownership
 - A slice does not include the the character in the last index unless we add an equal sign.
@@ -474,7 +474,7 @@ You can read value from a `HashMap` using the `.get(k: K)` method.
 
 <b>[Read more about hashmaps here.](https://doc.rust-lang.org/book/ch08-03-hash-maps.html)</b>
 
-### Some general principles
+### Some general `HashMap` principles
 - `HashMaps` store data on the heap.
 - `HashMaps` are homogeneous, ie all keys must be of the same type, same goes for all the values.
 - Rust can infer types within a hashmap.
