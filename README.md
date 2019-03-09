@@ -556,3 +556,21 @@ Most functions in Rust `std` and in third party packages return the `Result` typ
 ```
 
 ### Some general error handling priciples
+- Once you learn how to work with the `Result` type, you'll have easier time propagating or handling errors in Rust.
+- The `Result` enum has two variants `Ok(V)` and `Err(E)`.
+- You can propagate your errors to the calling function by returning the `Result` type.
+- When your code `panics` it's an _unrecoverable error_, however you can handle _recoverable errors_ using the `Result<V, E>` type.
+- `expect()` and `unwrap()` methods are better for prototyping and tests. You may use them as placeholders to get your protoype up and running until you're ready to make your code more robust, you can come back use the `Result`.
+- Returning `Result` in a function in your library gives the code caller an option to handle the returned error in a way that fits it's use case/scenario.
+- [Read here for more error handling guideline](https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html#guidelines-for-error-handling)
+
+
+## Generic Types
+
+
+
+## Traits
+
+
+
+## Lifetimes
