@@ -153,7 +153,7 @@ Tuple structs still behaves like ordinary tuples, you can use them with the upda
     println!("{}", naija.1); // 14
 ```
 
-## Enumns
+## Enums
 
 Enumerations or Enums as mostly referred to allows the definition of types by enumerating through a possible set of values.
 Enums are like variants, no data can be of more than one variant of the same enum. Classic example from the Rust book
