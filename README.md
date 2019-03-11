@@ -567,6 +567,8 @@ Most functions in Rust `std` and in third party packages return the `Result` typ
 
 ## Generic Types
 
+`Generics` is a tool in Rust that for effectively handling code duplication. It is an _abstract stand in_ for concrete types or properties.
+That is to say that they are types that can become or enable code perform operations on abstract types.
 
 
 ## Traits

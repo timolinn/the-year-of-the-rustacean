@@ -1,7 +1,11 @@
 [package]
-name = "traits"
+name = "the-year-of-the-rustacean"
 version = "0.1.0"
 authors = ["timolinn <timothyonyiuke@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+
+
+[lib]
+path = "ownership/src/main.rs"
