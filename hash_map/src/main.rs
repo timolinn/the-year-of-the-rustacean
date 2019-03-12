@@ -35,7 +35,6 @@ fn hash_map() -> () {
 fn update_key_value() -> () {
     use std::collections::HashMap;
 
-    // let text = "hello world wonderful world";
     let text = vec![1, 2, 3, 4, 1,3, 4, 1];
 
     let mut map = HashMap::new();

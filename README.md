@@ -576,3 +576,44 @@ That is to say that they are types that can become or enable code perform operat
 
 
 ## Lifetimes
+
+Every `reference` in Rust has a `lifetime`. `Lifetimes` specify how long a reference should live before it gets `dropped`.
+Rust requires us to annotate the relationships using generic lifetime parameters to ensure the actual references used at runtime will definitely be valid.
+
+### Lifetimes in `Structs`
+It’s possible for structs to hold references, but in that case we would need to add a lifetime annotation on every reference in the struct’s definition
+
+Example from the Rust book:
+
+```rust
+    struct ImportantExcerpt<'a> {
+        part: &'a str,
+    }
+
+    fn main() {
+        let novel = String::from("Call me Ishmael. Some years ago...");
+        let first_sentence = novel.split('.')
+            .next()
+            .expect("Could not find a '.'");
+        let i = ImportantExcerpt { part: first_sentence };
+    }
+```
+
+In the example above, an instance of `ImportantExcerpt` can’t outlive the reference it holds in its `part` field.
+
+
+### Lifetime Elision
+
+
+
+### Some general `lifetimes` priciples
+- `Lifetimes` are mostly inferred, just like `types`. Same way just like `types`, `lifetimes` must be _annotated_ when multiple `lifetimes` are possible.
+- When we specify the lifetime parameters in a function signature, we’re not changing the `lifetimes` of any values passed in or returned. Rather, we’re specifying that the borrow checker should reject any values that don’t adhere to the constraints.
+- The smaller of the `lifetimes` specified in a function definition becomes the main constraint in determining if the references will still be valid at the end of the function scope.
+- When returning a reference from a function, the `lifetime` parameter for the return type needs to match the `lifetime` parameter for one of the parameters, or to a value created within the function, which would be a dangling reference because the value will go out of scope at the end of the function.
+- The patterns programmed into Rust’s analysis of references are called the _lifetime elision rules_.
+- Lifetimes on function or method parameters are called _input lifetimes_, and lifetimes on return values are called _output lifetimes._
+- The compiler uses three rules to figure out what lifetimes references have when there aren’t explicit annotations, they include
+    + Each parameter gets its own lifetime.
+    + If there is exactly one input lifetime parameter, that lifetime is assigned to all output lifetime parameters
+    + If there are multiple input lifetime parameters, but one of them is &self or &mut self because this is a method, the lifetime of self is assigned to all output lifetime parameters

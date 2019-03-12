@@ -10,10 +10,6 @@ fn to_upper(s: &String) -> String {
     s.to_uppercase()
 }
 
-// fn modify_borrowed(s: &String) {
-//     s.push_str(" , Stamford Bridge.");
-// }
-
 fn modify_borrowed2(s: &mut String) {
     s.push_str(" , Stamford Bridge.");
 }

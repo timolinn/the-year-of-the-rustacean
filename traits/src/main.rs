@@ -70,6 +70,9 @@ pub fn notify2<T: Summary + Show>(item: T) -> () {
     println!("{:?}", item.summary());
 }
 
+/// Still trait bounds
+/// Means T must implement Summary and Show Traits
+/// Means U must implement Show trait
 pub fn notify3<T, U>(item: T, item2: U) -> ()
     where T: Summary + Show,
           U: Show
