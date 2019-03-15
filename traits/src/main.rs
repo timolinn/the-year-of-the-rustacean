@@ -71,8 +71,8 @@ pub fn notify2<T: Summary + Show>(item: T) -> () {
 }
 
 /// Still trait bounds
-/// Means T must implement Summary and Show Traits
-/// Means U must implement Show trait
+/// T must implement Summary and Show Traits
+/// U must implement Show trait
 pub fn notify3<T, U>(item: T, item2: U) -> ()
     where T: Summary + Show,
           U: Show
