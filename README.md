@@ -1,8 +1,10 @@
 # The year of the Rustacean 🦀
 
-This repository contains code samples and some writings based on my understandings of the Rust Programming Language. Feel free to use as your refresher for certain rust concepts that can be hard to grasp. This is my first low level programming language, it hasn't been easy plus Rust is a really different animal. This short summary is heavily influenced by the Rust Book and Chris Krycho's [podcast](https://newrustacean.com).
+This repository contains code samples and some general principles that guides major concepts in the Rust Programming Language.
 
-> If you find anything wrong, typos and what not, I'd be glad to to receive your pull request 😃.
+Feel free to use as your refresher for certain rust concepts that can be hard to grasp. This is my first low level programming language, it hasn't been easy plus Rust is a really different animal. This short summary is heavily influenced by the Rust Book and Chris Krycho's [podcast](https://newrustacean.com).
+
+> If you find anything wrong, typos, bugs and what not, I'd be glad to to receive your pull request 😃.
 
 ## Borrowing and References in Rust
 
@@ -567,8 +569,91 @@ Most functions in Rust `std` and in third party packages return the `Result` typ
 
 ## Generic Types
 
-`Generics` is a tool in Rust that for effectively handling code duplication. It is an _abstract stand in_ for concrete types or properties.
-That is to say that they are types that can become or enable code perform operations on abstract types.
+`Generics` are a tool in Rust for effectively handling code duplication. It is an _abstract stand in_ for concrete types or properties.
+That is to say that they are types that can become or enable code perform operations on abstract types. We can use generics to define function signatures or structs that we can use with many different concrete data types.
+
+Take for example:
+
+```rust
+    struct Point<T> {
+        x: T,
+        y: T,
+    }
+
+    fn main() {
+        // The compiler interpretes T as a integer here
+        let integer = Point { x: 5, y: 10 };
+        // The compiler interpretes T as a float here
+        let float = Point { x: 1.0, y: 4.0 };
+    }
+```
+
+Notice as T becomes whatever type we pass when creating an instance of struct `Point<T>`.
+
+We can also define generics in struct methods:
+
+```rust
+    impl<T, U> Point<T, U> {
+        fn mixup<V, W>(self, other: Point<V, W>) -> Point<T, W> {
+            Point {
+                x: self.x,
+                y: other.y,
+            }
+        }
+    }
+
+    fn main() {
+        let p1 = Point { x: 5, y: 10 };
+        let p2 = Point { x: "Hello", y: "world" };
+
+        let p3 = p1.mixup(p2);
+
+        println!("p3.x = {}, p3.y = {}", p3.x, p3.y);
+    }
+```
+
+Let's demostrate how generics can remove code duplication.
+
+```rust
+    // returns the largest integer in a vector of i32
+    fn largest_i32(list: &[i32]) -> i32 {
+    let mut largest = list[0];
+
+    for &item in list.iter() {
+        if item > largest {
+            largest = item;
+        }
+    }
+
+        largest
+    }
+
+    // returns the largest char in a vector of char
+    fn largest_char(list: &[char]) -> char {
+        let mut largest = list[0];
+
+        for &item in list.iter() {
+            if item > largest {
+                largest = item;
+            }
+        }
+
+        largest
+    }
+```
+
+We can easily replace the two functions above with one, by using `generics`, thereby eliminating code duplication (think DRY).
+
+```rust
+
+```
+
+
+### Some general `generics` principles
+- `Generics` help minimize duplicate code.
+- Combining `generics` and `trait` bounds is an idiomatic way of defining desired behaviour for your functions, methods, structs, traits etc.
+- Using generics does not make your code any slower than using concrete types.
+- _*Monomorphization*_ is the process of turning generic code into specific code by filling in the concrete types that are used when compiled.
 
 
 ## Traits
