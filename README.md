@@ -645,7 +645,17 @@ Let's demostrate how generics can remove code duplication.
 We can easily replace the two functions above with one, by using `generics`, thereby eliminating code duplication (think DRY).
 
 ```rust
+    fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
+    let mut largest = list[0];
 
+    for &item in list.iter() {
+        if item > largest {
+                largest = item;
+            }
+        }
+
+        largest
+    }
 ```
 
 
@@ -657,8 +667,103 @@ We can easily replace the two functions above with one, by using `generics`, the
 
 
 ## Traits
+A trait tells the Rust compiler about functionality a particular type has and can share with other types. Traits are similar to a feature often called interfaces in other languages, although with some differences one of which is that `traits` in Rust can have default implementations.
 
+We can use _trait bounds_ to specify that a generic can be any type that has certain behavior. A type’s behavior consists of the methods we can call on that type.
 
+```rust
+    pub trait Summary {
+        fn summarize(&self) -> String;
+
+        fn summarize_author(&self) -> String;
+
+        fn author(&self) -> String {
+            format!("Written by {:?}", self.summarize_author())
+        }
+    }
+```
+
+The `Summary` trait has three methods, `summarize`, `summarize_author` and `author`. The `author` method has a default implementation this means that any type that implements this trait has access to the the deafault method.
+
+Implementing a trait on a type:
+
+```rust
+    pub struct Tweet {
+        pub message: String,
+        pub author: String
+    }
+
+    pub struct NewsArticle {
+        pub headline: String,
+        pub author: String
+    }
+
+    pub struct LincolnsLetter {
+        pub subject: String,
+        pub author: String,
+    }
+
+    impl Summary for Tweet {
+        fn summarize(&self) -> String {
+            format!("The lad tweeted: {}", self.message)
+        }
+
+        fn summarize_author(&self) -> String {
+            format!("@{:?}", self.author)
+        }
+    }
+
+    impl Summary for NewsArticle {
+        fn summarize(&self) -> String {
+            format!("{}!!!", self.headline)
+        }
+
+        fn summarize_author(&self) -> String {
+            format!("{}", self.author)
+        }
+    }
+
+    impl Summary for LincolnsLetter {
+        fn summarize_author(&self) -> String {
+            format!("{}", self.author)
+        }
+    }
+```
+
+Implementing a trait on a type is similar to implementing regular methods. The difference is that after impl, we put the trait name that we want to implement, then use the for keyword, and then specify the name of the type we want to implement the trait for.
+
+### Trait Bound Syntax
+
+```rust
+    pub fn notify<T: Summary>(item: T) {
+        println!("Breaking news! {}", item.summarize());
+    }
+```
+The notify function takes a generic type parameter of `T` that must implement the `Summary` trait.
+We can also use the `+` operator and the `where` keyword to define clearer and more concise trait bounds.
+
+```rust
+    fn some_function<T: Display + Clone, U: Clone + Debug>(t: T, u: U) -> i32 {
+```
+
+The code above is same as the code below but made more clearer with the where keyword:
+
+```rust
+    fn some_function<T, U>(t: T, u: U) -> i32
+        where T: Display + Clone,
+              U: Clone + Debug
+    {
+```
+
+### Some general `trait` principles
+- One restriction to note with trait implementations is that we can implement a trait on a type only if either the trait or the type is local to our crate. it means we can’t implement external traits on external types.
+- Traits are similar to a feature often called interfaces in other languages, although with some differences one of which is that `traits` in Rust can have default implementations.
+- Trait definitions are a way to group method signatures together to define a set of behaviors necessary to accomplish some purpose.
+- The Summary trait would also need to be a public trait for another crate to implement it.
+- Default implementations can call other methods in the same trait, even if those other methods don’t have a default implementation.
+- Use the `where` keyword for a clearer implementation.
+- To return a type that implements some trait we do `fn some_function() -> impl SomeTrait`.
+- We can also conditionaly implement methods based on trait bounds. [More here](https://doc.rust-lang.org/book/ch10-02-traits.html#using-trait-bounds-to-conditionally-implement-methods)
 
 ## Lifetimes
 
@@ -702,3 +807,5 @@ In the example above, an instance of `ImportantExcerpt` can’t outlive the refe
     + Each parameter gets its own lifetime.
     + If there is exactly one input lifetime parameter, that lifetime is assigned to all output lifetime parameters
     + If there are multiple input lifetime parameters, but one of them is &self or &mut self because this is a method, the lifetime of self is assigned to all output lifetime parameters
+
+    The compiler throws an error if all three laws fail.
