@@ -617,13 +617,13 @@ Let's demostrate how generics can remove code duplication.
 ```rust
     // returns the largest integer in a vector of i32
     fn largest_i32(list: &[i32]) -> i32 {
-    let mut largest = list[0];
+        let mut largest = list[0];
 
-    for &item in list.iter() {
-        if item > largest {
-            largest = item;
+        for &item in list.iter() {
+            if item > largest {
+                largest = item;
+            }
         }
-    }
 
         largest
     }
@@ -646,13 +646,13 @@ We can easily replace the two functions above with one, by using `generics`, the
 
 ```rust
     fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
-    let mut largest = list[0];
+        let mut largest = list[0];
 
-    for &item in list.iter() {
-        if item > largest {
-                largest = item;
+        for &item in list.iter() {
+            if item > largest {
+                    largest = item;
+                }
             }
-        }
 
         largest
     }
