@@ -797,6 +797,7 @@ In the example above, an instance of `ImportantExcerpt` can’t outlive the refe
 
 
 ### Some general `lifetimes` priciples
+
 - `Lifetimes` are mostly inferred, just like `types`. Same way just like `types`, `lifetimes` must be _annotated_ when multiple `lifetimes` are possible.
 - When we specify the lifetime parameters in a function signature, we’re not changing the `lifetimes` of any values passed in or returned. Rather, we’re specifying that the borrow checker should reject any values that don’t adhere to the constraints.
 - The smaller of the `lifetimes` specified in a function definition becomes the main constraint in determining if the references will still be valid at the end of the function scope.
@@ -809,3 +810,28 @@ In the example above, an instance of `ImportantExcerpt` can’t outlive the refe
     + If there are multiple input lifetime parameters, but one of them is &self or &mut self because this is a method, the lifetime of self is assigned to all output lifetime parameters
 
     The compiler throws an error if all three laws fail.
+
+### Closures
+
+- Closurea are also known as anonymous functions. They are functions defined like variables and can also be passed as arguments to other functions. Unlike functions they have tje ability to capture values from the scope of which they are defined
+
+```rust
+    let calc = |a, b| {
+        a + b
+    };
+```
+
+### Some general `closure` principles
+
+- `Closures` can capture values from the scope they were defined.
+- They can be defined and assigned to a variable and executed in a different context.
+- They do not require type anotations of parameters and return types.
+- `Closures` may implement the following 3 function traits provided by the rust standard library:
+    - `FnOnce`: This means the closure takes ownership of the variables from it's scope and consumes them, thereby they can only be called once. This can be forced with the `move` keywork:
+    ```rust
+        let x = 3;
+        let y = 40;
+        let product = move |x, y| x * y;
+    ```
+    - `FnMut`: This means the closure borrows the variables mutably
+    - `Fn`: This means the closure borrows the variables immutably
