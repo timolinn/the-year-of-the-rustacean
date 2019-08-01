@@ -31,8 +31,6 @@ Take for example:
     } // name is out of scope, so it's now invalid.
 ```
 
-
-
 ### Some general Ownership principles
 
 - Rust use the notion of `borrowing` and `moving` to implement ownership rules.
@@ -206,6 +204,7 @@ using structs. See the example below:
 ```
 
 ### The `Option` enum.
+
 The `Option` enum is defined by the Rust standard library,
 it encodes the very common scenarios where a value could be something or nothing. Null does not exist in Rust, the `Option` enum is Rust's way of expressing a null or not-null scenarios.
 
@@ -228,6 +227,7 @@ The `Option<T>` enum has two variants `Some(T)` and `None`. The symbol `<T>` def
 Notice we didn't have to import `Option<T>` or `Some()` or `None`? This is beacuse by defaults they are included in the prelude, that's enough to note how important they are to the language.
 
 ### Some general `Enum` principles
+
 - Enums can encapsulate multiples types or variants.
 - A variant van be of any type.
 - We can pass data directly inside an enum instead of using structs.
@@ -422,7 +422,6 @@ slicing like this:
     let slice_s = &s[0..=1]; // he
 ```
 
-
 ### Iterating over a String.
 
 Fortuantely we can manipulate individual `char`s of a `String` by interating over them. Study and run the examples below:
@@ -440,6 +439,7 @@ Fortuantely we can manipulate individual `char`s of a `String` by interating ove
 Notice the `.bytes()` and `.chars()` methods?
 
 ### Some general `String` principles
+
 - Rust has only one string type in it's core, that is the `str` usually seen as `&str` in most codebases.
 - String literals are stored in the binary output of a program and are known as string slices.
 - There are three ways to look at a `String` in Rust's perspective, `bytes`, `scalar values` and `grapheme clusters`.
@@ -449,7 +449,6 @@ programmer is accessing the `String` from is not trivial, due to Rust's way of e
 - The `format!` macro works like the `println!` macro but returns the string instead printing to stdout.
 - You can use the `+` or the `format!` macro to concatenate a string.
 - We can iterate over strings as chars or as bytes.
-
 
 ## HashMap
 
@@ -477,6 +476,7 @@ You can read value from a `HashMap` using the `.get(k: K)` method.
 <b>[Read more about hashmaps here.](https://doc.rust-lang.org/book/ch08-03-hash-maps.html)</b>
 
 ### Some general `HashMap` principles
+
 - `HashMaps` store data on the heap.
 - `HashMaps` are homogeneous, ie all keys must be of the same type, same goes for all the values.
 - Rust can infer types within a hashmap.
@@ -496,6 +496,7 @@ You can read value from a `HashMap` using the `.get(k: K)` method.
 make it work.
 - You create a `HashMap<K, V>` using the conventional `new()` method: `let map = HashMap::new();`
 - You can also create a new `HashMap` from an array of tuples by calling the `.collect()` method on it.
+
 ```rust
     use std::collections::HashMap;
 
@@ -504,6 +505,7 @@ make it work.
 
     let scores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
 ```
+
 - Use the `.insert(K,V)` method to add a value to a `HashMap<K, V>` and `.get(&K)` to retrieve value.
 - For updating existing `HashMap` read [here](https://doc.rust-lang.org/book/ch08-03-hash-maps.html#updating-a-hash-map).
 
@@ -558,6 +560,7 @@ Most functions in Rust `std` and in third party packages return the `Result` typ
 ```
 
 ### Some general error handling priciples
+
 - Once you learn how to work with the `Result` type, you'll have easier time propagating or handling errors in Rust.
 - The `Result` enum has two variants `Ok(V)` and `Err(E)`.
 - You can propagate your errors to the calling function by returning the `Result` type.
@@ -565,7 +568,6 @@ Most functions in Rust `std` and in third party packages return the `Result` typ
 - `expect()` and `unwrap()` methods are better for prototyping and tests. You may use them as placeholders to get your protoype up and running until you're ready to make your code more robust, you can come back use the `Result`.
 - Returning `Result` in a function in your library gives the code caller an option to handle the returned error in a way that fits it's use case/scenario.
 - [Read here for more error handling guideline](https://doc.rust-lang.org/book/ch09-03-to-panic-or-not-to-panic.html#guidelines-for-error-handling)
-
 
 ## Generic Types
 
@@ -658,15 +660,15 @@ We can easily replace the two functions above with one, by using `generics`, the
     }
 ```
 
-
 ### Some general `generics` principles
+
 - `Generics` help minimize duplicate code.
 - Combining `generics` and `trait` bounds is an idiomatic way of defining desired behaviour for your functions, methods, structs, traits etc.
 - Using generics does not make your code any slower than using concrete types.
 - _*Monomorphization*_ is the process of turning generic code into specific code by filling in the concrete types that are used when compiled.
 
-
 ## Traits
+
 A trait tells the Rust compiler about functionality a particular type has and can share with other types. Traits are similar to a feature often called interfaces in other languages, although with some differences one of which is that `traits` in Rust can have default implementations.
 
 We can use _trait bounds_ to specify that a generic can be any type that has certain behavior. A type’s behavior consists of the methods we can call on that type.
@@ -756,6 +758,7 @@ The code above is same as the code below but made more clearer with the where ke
 ```
 
 ### Some general `trait` principles
+
 - One restriction to note with trait implementations is that we can implement a trait on a type only if either the trait or the type is local to our crate. it means we can’t implement external traits on external types.
 - Traits are similar to a feature often called interfaces in other languages, although with some differences one of which is that `traits` in Rust can have default implementations.
 - Trait definitions are a way to group method signatures together to define a set of behaviors necessary to accomplish some purpose.
@@ -771,6 +774,7 @@ Every `reference` in Rust has a `lifetime`. `Lifetimes` specify how long a refer
 Rust requires us to annotate the relationships using generic lifetime parameters to ensure the actual references used at runtime will definitely be valid.
 
 ### Lifetimes in `Structs`
+
 It’s possible for structs to hold references, but in that case we would need to add a lifetime annotation on every reference in the struct’s definition
 
 Example from the Rust book:
