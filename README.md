@@ -813,9 +813,11 @@ In the example above, an instance of `ImportantExcerpt` can’t outlive the refe
 
 ### Closures
 
-- Closurea are also known as anonymous functions. They are functions defined like variables and can also be passed as arguments to other functions. Unlike functions they have tje ability to capture values from the scope of which they are defined
+- Closures are also known as anonymous functions. They are functions defined like variables and can also be passed as arguments to other functions. Unlike functions they have the ability to capture values from the scope of which they are defined
 
 ```rust
+    let a = 2;
+    let b = 4;
     let calc = |a, b| {
         a + b
     };
