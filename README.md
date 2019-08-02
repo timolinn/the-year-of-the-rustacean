@@ -4,7 +4,9 @@ This repository contains code samples and some general principles that guides ma
 
 Feel free to use as your refresher for certain rust concepts that can be hard to grasp. This is my first low level programming language, it hasn't been easy plus Rust is a really different animal. This short summary is heavily influenced by the Rust Book and Chris Krycho's [podcast](https://newrustacean.com).
 
-> If you find anything wrong, typos, bugs and what not, I'd be glad to to receive your pull request 😃.
+> If you find anything wrong, typos, bugs and what not, I'd be glad to to receive your pull request.
+
+Also, remember to *star* this repo if you found it any useful 😃.
 
 ## Borrowing and References in Rust
 
@@ -833,11 +835,52 @@ In the example above, an instance of `ImportantExcerpt` can’t outlive the refe
 - They can be defined and assigned to a variable and executed in a different context.
 - They do not require type anotations of parameters and return types.
 - `Closures` may implement the following 3 function traits provided by the rust standard library:
-    - `FnOnce`: This means the closure takes ownership of the variables from it's scope and consumes them, thereby they can only be called once. This can be forced with the `move` keywork:
+  - `FnOnce`: This means the closure takes ownership of the variables from it's scope and consumes them, thereby they can only be called once. This can be forced with the `move` keywork:
+
     ```rust
         let x = 3;
         let y = 40;
         let product = move |x, y| x * y;
     ```
-    - `FnMut`: This means the closure borrows the variables mutably
-    - `Fn`: This means the closure borrows the variables immutably
+
+  - `FnMut`: This means the closure borrows the variables mutably
+  - `Fn`: This means the closure borrows the variables immutably
+
+## Smart Pointers
+
+## Concurrency
+
+Concurrency is when different parts of a program execute independently, while parallellism is when different parts of a program run at the same time. When we say concurrency think Processes, Threads. A process contains 1 or more threads, the process manages the resources available to the threads. A thread is a sequence of instructions that is to be executed by the operating system.
+
+Concurrency can improve the performance of our programs, but they complexity in them. When multiple threads are running in the same memory space, sharing the same resource available in a process this can lead some known problems in our programs;
+
+- Race Condition: Multiple threads trying to access the same memory
+- Deadlocks: Two threads waiting on each other to finish using a resource one of them is supposedly using, preventing both threads from continuing.
+- Hard to reproduce circumstance that led to a bug.
+
+```rust
+    use std::thread;
+    use std::time::Duration;
+
+    fn main() {
+        let handle = thread::spawn(|| {
+            for i in 1..10 {
+                println!("hi number {} from the spawned thread!", i);
+                thread::sleep(Duration::from_millis(1));
+            }
+        });
+
+        for i in 1..5 {
+            println!("hi number {} from the main thread!", i);
+            thread::sleep(Duration::from_millis(1));
+        }
+        handle.join().unwrap();
+    }
+```
+
+Note that the `handle.join().unwrap()` call ensures that the main thread waits for the spawnwd thread to complete execution before exiting.
+
+### Some general `Concurrency` principles in Rust
+
+- Rust has much lower level control over operating system threads as opposed to `green threads` in Golang.
+-
