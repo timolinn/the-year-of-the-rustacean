@@ -4,15 +4,23 @@ This repository contains code samples and some general principles that guides ma
 
 Feel free to use as your refresher for certain rust concepts that can be hard to grasp. This is my first low level programming language, it hasn't been easy plus Rust is a really different animal. This short summary is heavily influenced by the Rust Book and Chris Krycho's [podcast](https://newrustacean.com).
 
-> If you find anything wrong, typos, bugs and what not, I'd be glad to to receive your pull request.
+> If you find anything wrong, typos, bugs and what not, send a pull request.
 
 Also, remember to *star* this repo if you found it any useful 😃.
+
+## Content
+
+- [Borrowing and References](#borrowing-and-references-in-rust)
+- [Ownership](#ownership-in-rust)
+- [Slice](#the-slice-type)
+- [Structs](#structs)
+- [Tuple Structs](#tuple-structs)
 
 ## Borrowing and References in Rust
 
 Every value/data has only one owner in Rust. By default, variables are immutable and block scoped (every variable becomes invalid at the end of it's scope. A Scope or block is basically a `{..}`), Rust uses _borrowing_ and _referencing_ to deal with data ownership, as opposed to _moving_ data about and having to explicitly return or pass ownership to another block or function for further use.
 
-### Rules of References
+### Some general principles
 
 - At any given time, you can have either (but not both of) one mutable reference or any number of immutable references.
 - References must always be valid
@@ -880,7 +888,51 @@ Concurrency can improve the performance of our programs, but they complexity in 
 
 Note that the `handle.join().unwrap()` call ensures that the main thread waits for the spawnwd thread to complete execution before exiting.
 
+*Channels* are means for communication between threads. Threads or Actors communication by sending each other messages containing data through channels.
+
+```rust
+    use std::sync::mpsc;
+    use std::thread;
+
+    pub fn main() {
+        let (tx, rx)= mpsc::channel();
+
+        thread::spawn(move || {
+            let value = 50;
+            tx.send(value).unwrap();
+        });
+
+        let recvd = rx.recv().unwrap();
+        println!("Got: {}", recvd);
+    }
+```
+
+The Rust compiler won't compile if the data types that would pass through the channel is not defined, in the example above, rust infers the data types through the usage in the spawned thread.
+
+*Shared State Concurrency* is another way of handling concurrency apart from using channels. Rust is well equipped to use shared state concurrency effectively compared to many other programming languages. We can effectively share memory with Mutexes which is so tricky that most developers prefer to use channels for concurrency, however the combination of Rust's type system, smart pointers and ownershiop rules, we cannot get locking nad unlocking with mutexes wrong.
+
+```rust
+    use std::sync::Mutex;
+
+    pub fn main() {
+        let m = Mutex::new(5);
+
+        {
+            let mut num = m.lock().unwrap();
+            *num = 9;
+        }
+
+        println!("{:?}", m);
+    }
+```
+
 ### Some general `Concurrency` principles in Rust
 
 - Rust has much lower level control over operating system threads as opposed to `green threads` in Golang.
--
+- A channel in programming has two halves: a transmitter and a receiver. The transmitter half is the upstream location where you a rubber ducks into a river, and the receiver half is where the rubber duck ends up downstream.
+- A channel is a means of communication between threads. *Do not communicate by sharing memory, share memory by communicating* - Golang Slogan
+- The `channel` takes ownership of the sent variable.
+- The Rust std implementation of channels allow only one `receiver` but can allow multiple `producers` or `senders`
+- Shared-State Concurrency is another way of handling concurrency, it simply means `sharing memory` in the sense that data/value transferred through a channel maybe accessed by multiple threads which leads to multiple ownership. Rust is very much equipped to handle this type of concurrency with it's type system, smart pointers and ownership rules.
+- Shared state concurrency requires the use of `Mutexes` (_mutual exclusion_). This is the process of `guarding` the data by the mutex. Every thread is required to request for access before accessing the data from the mutex's lock.
+- Using mutexes can be incredibly tricky, however, thanks to Rust's type system you cannot get locking and unlocking wrong.
