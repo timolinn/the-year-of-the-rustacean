@@ -1,15 +1,27 @@
 #[allow(unused_imports)]
 #[allow(unused_variables)]
 
-use std::sync::Mutex;
+use std::sync::{Mutex, Arc};
+use std::thread;
 
 pub fn main() {
-    let m = Mutex::new(5);
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
 
-    {
-        let mut num = m.lock().unwrap();
-        *num = 9;
+    for idx in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            println!("Thread {} spawned", idx);
+            let mut num = counter.lock().unwrap();
+
+            *num += 1;
+        });
+        handles.push(handle);
     }
 
-    println!("{:?}", m);
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("Result: {}", *counter.lock().unwrap());
 }

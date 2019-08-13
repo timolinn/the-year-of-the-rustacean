@@ -856,6 +856,33 @@ In the example above, an instance of `ImportantExcerpt` can’t outlive the refe
 
 ## Smart Pointers
 
+Smart pointers originated from C++, they are like references (`&`) but provide more capabilities and contain metadata. Some smart pointers in rust that we've already used are the `String` and `Vec<T>` types, both own some data and provide some metadata and capabilities on them.
+The following are other smart pointers in rust:
+
+- `Box<T>` - for allocating data on the heap.
+- `Rc<T>` - for creating multiple ownerships of data
+- `Ref<T>` and `RefMut<T>` - accessed through the `RefCell<T>`, it enforces the borrowing and ownership rules of Rust at runtime.
+
+### Some general `smart pointers` principles
+
+- The `Box<T>` type is a smart pointer because it implements the `Deref` trait, which allows `Box<T>` values to be treated like references.
+- When a `Box<T>` value goes out of scope, the heap data that the box is pointing to is cleaned up as well because of the `Drop` trait implementation.
+- Deref coercion is a convenience that Rust performs on arguments to functions and methods. Deref coercion converts a reference to a type that implements Deref into a reference to a type that Deref can convert the original type into.
+
+  ```rust
+        fn hello(name: &str) {
+            println!("Hello, {}!", name);
+        }
+
+        fn main() {
+            let m = MyBox::new(String::from("Rust"));
+            hello(&m);
+        }
+  ```
+
+  In the code above we don't need to explicitly add the deref operatpr (`*`) because of the implicit deref coercion feature of rust.
+- The `Drop` trait lets you customize what happens when a value goes out of scope. This is basically a function called `drop` that the Rust calls automatically when the value is out of scope. The compiler inserts the call to this method where needed.
+
 ## Concurrency
 
 Concurrency is when different parts of a program execute independently, while parallellism is when different parts of a program run at the same time. When we say concurrency think Processes, Threads. A process contains 1 or more threads, the process manages the resources available to the threads. A thread is a sequence of instructions that is to be executed by the operating system.
@@ -926,6 +953,36 @@ The Rust compiler won't compile if the data types that would pass through the ch
     }
 ```
 
+Combination of mutexes and smart pointers enable us write programs that uses multi threading and `multiple ownerships`. This can be achieved by using the `Arc<T>` from the standard library.
+
+```rust
+
+    use std::sync::{Mutex, Arc};
+    use std::thread;
+
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
+
+    for idx in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            println!("Thread {} spawned", idx);
+            let mut num = counter.lock().unwrap();
+
+            *num += 1;
+        });
+        handles.push(handle);
+    }
+
+    for handle in handles {
+        handle.join().unwrap();
+    }
+
+    println!("Result: {}", *counter.lock().unwrap());
+```
+
+While the `Arc<T>` and mutex locks enable us to have multiple ownerships between threads, we can as well use the `std::marker::Send` trait to transfer ownership between threads. Also the `std::marker::Sync` indicates that a reference to `T` (`&T`) can be sent saftely to another thread.
+
 ### Some general `Concurrency` principles in Rust
 
 - Rust has much lower level control over operating system threads as opposed to `green threads` in Golang.
@@ -936,3 +993,6 @@ The Rust compiler won't compile if the data types that would pass through the ch
 - Shared-State Concurrency is another way of handling concurrency, it simply means `sharing memory` in the sense that data/value transferred through a channel maybe accessed by multiple threads which leads to multiple ownership. Rust is very much equipped to handle this type of concurrency with it's type system, smart pointers and ownership rules.
 - Shared state concurrency requires the use of `Mutexes` (_mutual exclusion_). This is the process of `guarding` the data by the mutex. Every thread is required to request for access before accessing the data from the mutex's lock.
 - Using mutexes can be incredibly tricky, however, thanks to Rust's type system you cannot get locking and unlocking wrong.
+- `Mutex<T>` provide interior mutability and can be used to mutate contents inside an `Arc<T>`, same way the `Cell` family does. Specifically, we can provide interior mutability in a `Rc<T>` using the `RefCell<T>`.
+- `Arc<T>` provides multiple ownership functionality in a thread safe way as opposed to `Rc<T>` it is _atomic reference counted type_.
+- `Mutex<T>` comes with the risk of creating deadlocks. These occur when an operation needs to lock two resources and two threads have each acquired one of the locks, causing them to wait for each other forever.
